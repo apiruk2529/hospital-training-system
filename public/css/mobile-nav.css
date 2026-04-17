@@ -1,0 +1,165 @@
+/* ===================================
+   Mobile Navigation Styles
+   =================================== */
+
+/* Hamburger Menu Button */
+.hamburger-menu {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-primary);
+    padding: 0.5rem;
+    transition: var(--transition);
+    z-index: 1001;
+    position: absolute;
+    left: 1rem;
+    /* ซ้ายบน */
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.hamburger-menu:hover {
+    color: var(--primary-color);
+}
+
+.hamburger-menu.active i {
+    color: var(--primary-color);
+}
+
+/* User Section - Mobile (inside menu) */
+.nav-user-mobile {
+    display: none;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+    margin-top: 1rem;
+    border-top: 2px solid var(--border-color);
+}
+
+.nav-user-mobile .user-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+/* User Section - Desktop */
+.nav-user-desktop {
+    display: flex;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+
+    /* Show hamburger menu on mobile */
+    .hamburger-menu {
+        display: block !important;
+    }
+
+    /* Hide desktop user section on mobile */
+    .nav-user-desktop {
+        display: none !important;
+    }
+
+    /* Show mobile user section inside menu */
+    .nav-user-mobile {
+        display: flex !important;
+    }
+
+    /* Navigation Container */
+    .nav-container {
+        position: relative;
+    }
+
+    /* Hide brand on mobile when hamburger is visible */
+    .nav-brand {
+        margin-left: 3rem;
+        /* เว้นที่ให้ hamburger */
+    }
+
+    /* Navigation Menu Mobile Styles - High Specificity */
+    nav.navbar .nav-menu {
+        position: fixed !important;
+        top: 70px !important;
+        left: -100% !important;
+        width: 280px !important;
+        height: calc(100vh - 70px) !important;
+        background: var(--card-bg) !important;
+        box-shadow: var(--shadow-xl) !important;
+        flex-direction: column !important;
+        padding: 1rem !important;
+        transition: left 0.3s ease-in-out !important;
+        overflow-y: auto !important;
+        z-index: 1000 !important;
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    nav.navbar .nav-menu.active {
+        left: 0 !important;
+        box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .nav-item {
+        width: 100% !important;
+        justify-content: flex-start !important;
+        padding: 1rem !important;
+        border-radius: var(--radius-md) !important;
+        margin-bottom: 0.25rem !important;
+    }
+
+    /* Overlay when menu is open */
+    nav.navbar .nav-menu.active::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 280px;
+        width: calc(100vw - 280px);
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+        pointer-events: auto;
+        cursor: pointer;
+    }
+
+    /* Hide brand text on very small screens */
+    @media (max-width: 480px) {
+        .brand-text {
+            display: none;
+        }
+    }
+}
+
+/* Tablet adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .nav-container {
+        padding: 1rem;
+    }
+
+    .nav-item {
+        padding: 0.6rem 1rem;
+        font-size: 0.95rem;
+    }
+
+    .brand-text {
+        font-size: 1.1rem;
+    }
+
+    /* Hide mobile user section on tablet/desktop */
+    .nav-user-mobile {
+        display: none !important;
+    }
+}
+
+/* Desktop - ensure mobile user section is hidden */
+@media (min-width: 769px) {
+    .nav-user-mobile {
+        display: none !important;
+    }
+
+    .nav-user-desktop {
+        display: flex !important;
+    }
+}

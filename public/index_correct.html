@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ระบบจัดเก็บข้อมูลการอบรมและการประชุม โรงพยาบาลวัดเพลง">
+    <title>ระบบจัดเก็บข้อมูลการอบรม - โรงพยาบาลวัดเพลง</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/courses.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="page active">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <div class="hospital-logo">🏥</div>
+                    <h1>โรงพยาบาลวัดเพลง</h1>
+                    <p>ระบบจัดเก็บข้อมูลการอบรมและการประชุม</p>
+                </div>
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label for="username">ชื่อผู้ใช้</label>
+                        <input type="text" id="username" name="username" required autocomplete="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">รหัสผ่าน</label>
+                        <input type="password" id="password" name="password" required autocomplete="current-password">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">เข้าสู่ระบบ</button>
+                </form>
+                <div id="loginError" class="error-message"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="mainApp" class="page">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <div class="logo">🏥</div>
+                    <div class="brand-text">ระบบจัดเก็บข้อมูลการอบรม</div>
+                </div>
+                <div class="nav-menu">
+                    <button id="navDashboard" class="nav-item active">
+                        <span class="icon">📊</span>
+                        <span>หน้าหลัก</span>
+                    </button>
+                    <button id="navRecords" class="nav-item">
+                        <span class="icon">📚</span>
+                        <span>ประวัติการอบรม</span>
+                    </button>
+                    <button id="navOnlineTraining" class="nav-item">
+                        <span class="icon">🎓</span>
+                        <span>อบรมออนไลน์</span>
+                    </button>
+                    <button id="navUsers" class="nav-item admin-only" style="display:none;">
+                        <span class="icon">👥</span>
+                        <span>จัดการผู้ใช้</span>
+                    </button>
+                </div>
+                <div class="nav-user">
+                    <div id="navUserName" class="user-name">ผู้ใช้</div>
+                    <button id="btnLogout" class="btn btn-secondary">ออกจากระบบ</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Dashboard Section -->
+        <section id="dashboardSection" class="content-section active">
+            <div class="container">
+                <div class="page-header">
+                    <h2>ภาพรวมการอบรม</h2>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📚</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="totalRecords">0</div>
+                            <div class="stat-label">รายการทั้งหมด</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⏱️</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="totalHours">0</div>
+                            <div class="stat-label">ชั่วโมงรวม</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📅</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="thisYear">0</div>
+                            <div class="stat-label">ปีนี้</div>
+                        </div>
+                    </div>
+                    <div class="stat-card admin-only" style="display: none;">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="totalUsers">0</div>
+                            <div class="stat-label">ผู้ใช้งาน</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="recent-records">
+                    <h3>รายการล่าสุด</h3>
+                    <div id="recentRecordsList" class="records-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Records Section -->
+        <section id="recordsSection" class="content-section">
+            <div class="container">
+                <div class="page-header">
+                    <h2>ประวัติการอบรมและการประชุม</h2>
+                    <button id="btnAddRecord" class="btn btn-primary">+ เพิ่มรายการใหม่</button>
+                </div>
+                <div class="filters-bar">
+                    <input type="text" id="searchInput" placeholder="ค้นหา..." class="search-input">
+                    <select id="filterType" class="filter-select">
+                        <option value="">ทุกประเภท</option>
+                    </select>
+                    <select id="filterFormat" class="filter-select">
+                        <option value="">ทุกรูปแบบ</option>
+                    </select>
+                </div>
+                <div id="recordsTable" class="table-container"></div>
+            </div>
+        </section>
+
+        <!-- Users Section (Admin Only) -->
+        <section id="usersSection" class="content-section">
+            <div class="container">
+                <div class="page-header">
+                    <h2>จัดการผู้ใช้งาน</h2>
+                    <button id="btnAddUser" class="btn btn-primary">+ เพิ่มผู้ใช้ใหม่</button>
+                </div>
+                <div id="usersTable" class="table-container"></div>
+            </div>
+        </section>
+
+        <!-- Online Training Section -->
+        <section id="onlineTrainingSection" class="content-section">
+            <div class="container">
+                <div class="page-header">
+                    <h2>หลักสูตรอบรมออนไลน์</h2>
+                    <button id="btnAddCourse" class="btn btn-primary admin-only" style="display: none;">+
+                        สร้างหลักสูตร</button>
+                </div>
+                <div id="coursesGrid" class="courses-grid"></div>
+            </div>
+        </section>
+
+        <!-- Course Modal (Create / Edit) -->
+        <div id="courseModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="courseModalTitle">สร้างหลักสูตรใหม่</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <form id="courseForm" class="modal-form">
+                    <input type="hidden" id="courseId">
+                    <div class="form-row">
+                        <div class="form-group" style="flex:1">
+                            <label for="courseTitle">ชื่อหลักสูตร *</label>
+                            <input type="text" id="courseTitle" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="courseDescription">คำอธิบาย</label>
+                        <textarea id="courseDescription" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="courseRequiredTime">เวลาเรียนขั้นต่ำ (นาที)</label>
+                        <input type="number" id="courseRequiredTime" min="0" value="60">
+                        <small
+                            style="color: #6b7280; font-size: 0.8rem;">ผู้เรียนต้องเรียนครบตามเวลานี้จึงจะทำแบบทดสอบหลังเรียนได้</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="courseCover">รูปปก</label>
+                        <input type="file" id="courseCover" accept="image/*">
+                        <div id="courseCoverPreview" style="margin-top:0.5rem; display:none;"></div>
+                    </div>
+
+                    <hr style="margin:0.5rem 0;">
+                    <h4 style="margin:0.5rem 0;">สื่อการเรียนรู้</h4>
+
+                    <div class="form-group">
+                        <label for="materialTitle">ชื่อสื่อการเรียนรู้</label>
+                        <input type="text" id="materialTitle">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="materialType">ประเภท</label>
+                            <select id="materialType">
+                                <option value="video">วิดีโอ</option>
+                                <option value="pdf">เอกสาร (PDF)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="videoSourceGroup" class="form-group">
+                        <label>แหล่งที่มาวิดีโอ</label>
+                        <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                <input type="radio" name="videoSource" value="youtube" checked> YouTube URL
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                <input type="radio" name="videoSource" value="file"> อัปโหลดไฟล์ (MP4)
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="videoUrlGroup" class="form-group">
+                        <label for="materialVideoUrl">YouTube URL</label>
+                        <input type="url" id="materialVideoUrl" placeholder="https://www.youtube.com/watch?v=...">
+                    </div>
+
+                    <div id="videoFileGroup" class="form-group" style="display: none;">
+                        <label for="materialVideoFile">ไฟล์วิดีโอ (MP4, Max 500MB)</label>
+                        <input type="file" id="materialVideoFile" accept="video/mp4">
+                    </div>
+
+                    <div id="pdfFileGroup" class="form-group" style="display: none;">
+                        <label for="materialPdfFile">ไฟล์ PDF</label>
+                        <input type="file" id="materialPdfFile" accept="application/pdf">
+                    </div>
+
+                    <div class="form-row" style="gap:0.5rem; align-items:end; margin-top: 1rem;">
+                        <button type="button" id="btnAddMaterial" class="btn btn-secondary" style="width: 100%;">+
+                            เพิ่มสื่อการเรียนรู้</button>
+                    </div>
+
+                    <div id="materialsList" style="margin-bottom:0.5rem; margin-top: 1rem;"></div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary modal-close">ยกเลิก</button>
+                        <button type="submit" class="btn btn-primary">บันทึกหลักสูตร</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Course Detail Section -->
+        <section id="courseDetailSection" class="content-section">
+            <div class="container">
+                <button id="btnBackToCourses" class="btn btn-secondary" onclick="backToCourses()">← กลับ</button>
+                <h2 id="courseDetailTitle"></h2>
+                <p id="courseDetailDescription"></p>
+
+                <div id="courseEnrollBtn" style="display: none; margin: 1rem 0;">
+                    <button id="enrollButton" class="btn btn-primary btn-lg"
+                        onclick="enrollCourse()">ลงทะเบียนเรียน</button>
+                </div>
+
+                <div id="courseContent" style="display:none;">
+                    <!-- Learning Progress Bar -->
+                    <div class="learning-progress"
+                        style="margin: 1.5rem 0; padding: 1rem; background: #f9fafb; border-radius: 8px;">
+                        <h4 style="margin: 0 0 0.5rem 0; font-size: 1rem;">ความคืบหน้าการเรียน</h4>
+                        <div class="progress-bar-container"
+                            style="width: 100%; height: 24px; background: #e5e7eb; border-radius: 12px; overflow: hidden; margin-bottom: 0.5rem;">
+                            <div class="progress-bar" id="learningProgressBar"
+                                style="height: 100%; background: linear-gradient(90deg, #10b981, #059669); transition: width 0.3s ease; width: 0%;">
+                            </div>
+                        </div>
+                        <p id="learningProgressText" style="margin: 0; font-size: 0.875rem; color: #6b7280;">เวลาเรียน:
+                            0 / 60 นาที</p>
+                    </div>
+
+                    <!-- Certificate Button (shown when completed) -->
+                    <div id="certificateBtn" style="display: none; margin: 1rem 0;">
+                        <button class="btn btn-success" onclick="viewCertificate()"
+                            style="background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 1rem; display: flex; align-items: center; gap: 8px;">
+                            📜 ดูใบรับรองการจบหลักสูตร
+                        </button>
+                    </div>
+
+                    <h3>สื่อการเรียนรู้</h3>
+                    <div id="courseMaterialsList"></div>
+                    <div id="materialViewer" class="material-viewer"></div>
+
+                    <h3>แบบทดสอบ</h3>
+                    <div id="courseQuizzes" class="quizzes-section"></div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Certificate Modal -->
+    <div id="certificateModal" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h3>ใบรับรองการจบหลักสูตร</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 20px; text-align: center;">
+                <div id="certificatePreview" class="certificate-preview"></div>
+                <div class="form-actions" style="justify-content: center; margin-top: 20px;">
+                    <button type="button" class="btn btn-secondary modal-close">ปิด</button>
+                    <button type="button" class="btn btn-primary" onclick="printCertificate()">🖨️
+                        พิมพ์ใบรับรอง</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="quizModalTitle">แบบทดสอบ</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="quizForm" class="modal-form"></form>
+        </div>
+    </div>
+
+    <!-- Modal: Add/Edit Record -->
+    <div id="recordModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="recordModalTitle">เพิ่มรายการใหม่</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="recordForm" class="modal-form">
+                <input type="hidden" id="recordId">
+                <!-- เลือกเจ้าหน้าที่ (Admin only) -->
+                <div class="form-row" id="staffSelectionRow" style="display: none;">
+                    <div class="form-group">
+                        <label for="recordStaffId">เจ้าหน้าที่ *</label>
+                        <select id="recordStaffId">
+                            <option value="">-- เลือกเจ้าหน้าที่ --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="recordTitle">หัวข้อ *</label>
+                        <input type="text" id="recordTitle" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="recordType">ประเภท *</label>
+                        <select id="recordType" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="recordFormat">รูปแบบ *</label>
+                        <select id="recordFormat" required></select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="recordStartDate">วันที่เริ่ม *</label>
+                        <input type="date" id="recordStartDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="recordEndDate">วันที่สิ้นสุด *</label>
+                        <input type="date" id="recordEndDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="recordHours">จำนวนชั่วโมง *</label>
+                        <input type="number" id="recordHours" step="0.5" min="0" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="recordOrganization">หน่วยงาน</label>
+                        <input type="text" id="recordOrganization">
+                    </div>
+                    <div class="form-group">
+                        <label for="recordLocation">สถานที่</label>
+                        <input type="text" id="recordLocation">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="recordDescription">รายละเอียด</label>
+                    <textarea id="recordDescription" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="recordCertificate">เลขที่ใบรับรอง</label>
+                    <input type="text" id="recordCertificate">
+                </div>
+                <div class="form-group">
+                    <label for="recordAttachment">แนบไฟล์ (รูปภาพ, PDF)</label>
+                    <input type="file" id="recordAttachment" accept="image/*,application/pdf">
+                    <div id="attachmentPreview" class="attachment-preview"></div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary modal-close-btn">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">บันทึก</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Add/Edit User (Admin Only) -->
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="userModalTitle">เพิ่มผู้ใช้ใหม่</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="userForm" class="modal-form">
+                <input type="hidden" id="userId">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="userEmployeeId">รหัสพนักงาน *</label>
+                        <input type="text" id="userEmployeeId" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userUsername">ชื่อผู้ใช้ *</label>
+                        <input type="text" id="userUsername" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="userFullName">ชื่อ-นามสกุล *</label>
+                        <input type="text" id="userFullName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userEmail">อีเมล</label>
+                        <input type="email" id="userEmail">
+                    </div>
+                </div>
+                <div id="passwordGroup" class="form-row">
+                    <div class="form-group">
+                        <label for="userPassword">รหัสผ่าน *</label>
+                        <input type="password" id="userPassword" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="userPosition">ตำแหน่ง</label>
+                        <input type="text" id="userPosition">
+                    </div>
+                    <div class="form-group">
+                        <label for="userDepartment">แผนก</label>
+                        <input type="text" id="userDepartment">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="userRole">สิทธิ์การใช้งาน *</label>
+                        <select id="userRole" required>
+                            <option value="user">ผู้ใช้ทั่วไป</option>
+                            <option value="admin">ผู้ดูแลระบบ</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary modal-close-btn">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">บันทึก</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+    <script src="js/courses-admin.js"></script>
+    <script src="js/quiz-admin.js"></script>
+    <script src="js/online-training.js"></script>
+</body>
+
+</html>

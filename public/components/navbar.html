@@ -1,0 +1,50 @@
+<!-- Navigation Bar -->
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="nav-brand">
+            <div class="logo">🏥</div>
+            <div class="brand-text">ระบบจัดเก็บข้อมูลการอบรม</div>
+        </div>
+
+        <!-- Navigation Menu -->
+        <div class="nav-menu" id="navMenu">
+            <button id="navDashboard" class="nav-item active">
+                <span class="icon">📊</span>
+                <span>หน้าหลัก</span>
+            </button>
+            <button id="navRecords" class="nav-item">
+                <span class="icon">📚</span>
+                <span>ประวัติการอบรม</span>
+            </button>
+            <button id="navOnlineTraining" class="nav-item">
+                <span class="icon">🎓</span>
+                <span>อบรมออนไลน์</span>
+            </button>
+            <button id="navMediaLibrary" class="nav-item">
+                <span class="icon">🗂️</span>
+                <span>คลังสื่อ</span>
+            </button>
+            <button id="navUsers" class="nav-item admin-only" style="display:none;">
+                <span class="icon">👥</span>
+                <span>จัดการผู้ใช้ & Provider ID</span>
+            </button>
+
+            <!-- User Section (Inside menu on mobile) -->
+            <div class="nav-user-mobile">
+                <div id="navUserNameMobile" class="user-name">ผู้ใช้</div>
+                <button id="btnLogoutMobile" class="btn btn-secondary btn-block">ออกจากระบบ</button>
+            </div>
+        </div>
+
+        <!-- User Section (Desktop only) -->
+        <div class="nav-user nav-user-desktop">
+            <div id="navUserName" class="user-name">ผู้ใช้</div>
+            <button id="btnLogout" class="btn btn-secondary">ออกจากระบบ</button>
+        </div>
+
+        <!-- Hamburger Menu Button (Last in order, but positioned right via CSS) -->
+        <button class="hamburger-menu" id="hamburgerMenu" aria-label="Toggle menu">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</nav>

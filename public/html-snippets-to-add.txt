@@ -1,0 +1,69 @@
+<!-- Add this after the Users Section in index.html -->
+
+<!-- Online Training Section -->
+<section id="onlineTrainingSection" class="content-section">
+    <div class="container">
+        <div class="page-header">
+            <h2>หลักสูตรอบรมออนไลน์</h2>
+            <button id="btnAddCourse" class="btn btn-primary admin-only" style="display: none;">+ สร้างหลักสูตร</button>
+        </div>
+        <div id="coursesGrid" class="courses-grid"></div>
+    </div>
+</section>
+
+<!-- Course Detail Section -->
+<section id="courseDetailSection" class="content-section">
+    <div class="container">
+        <button id="btnBackToCourses" class="btn btn-secondary" onclick="backToCourses()">← กลับ</button>
+        <h2 id="courseDetailTitle"></h2>
+        <p id="courseDetailDescription"></p>
+        
+        <div id="courseEnrollBtn" style="display: none;">
+            <button class="btn btn-primary btn-lg" onclick="enrollCourse()">ลงทะเบียนเรียน</button>
+        </div>
+        
+        <div id="courseContent">
+            <h3>สื่อการเรียนรู้</h3>
+            <div id="courseMaterialsList"></div>
+            <div id="materialViewer" class="material-viewer"></div>
+            
+            <h3>แบบทดสอบ</h3>
+            <div id="courseQuizzes" class="quizzes-section"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Quiz Modal -->
+<div id="quizModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="quizModalTitle">แบบทดสอบ</h3>
+            <button class="modal-close">&times;</button>
+        </div>
+        <form id="quizForm" class="modal-form"></form>
+    </div>
+</div>
+
+<!-- Update the nav menu to include Online Training button -->
+<!-- Replace the existing nav-menu div with: -->
+<div class="nav-menu">
+    <button id="navDashboard" class="nav-item active">
+        <span class="icon">📊</span>
+        <span>หน้าหลัก</span>
+    </button>
+    <button id="navRecords" class="nav-item">
+        <span class="icon">📚</span>
+        <span>ประวัติการอบรม</span>
+    </button>
+    <button id="navOnlineTraining" class="nav-item">
+        <span class="icon">🎓</span>
+        <span>อบรมออนไลน์</span>
+    </button>
+    <button id="navUsers" class="nav-item admin-only" style="display: none;">
+        <span class="icon">👥</span>
+        <span>จัดการผู้ใช้</span>
+    </button>
+</div>
+
+<!-- Add this before the closing </body> tag -->
+<script src="js/online-training.js"></script>

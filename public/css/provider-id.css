@@ -1,0 +1,186 @@
+/* Provider-ID OAuth Styles */
+
+/* Login divider */
+.login-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1.5rem 0;
+    color: var(--text-secondary);
+}
+
+.login-divider::before,
+.login-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.login-divider span {
+    padding: 0 1rem;
+    font-size: 0.9rem;
+}
+
+/* Provider-ID section */
+.provider-id-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+/* Provider-ID buttons */
+.btn-provider {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border: none;
+}
+
+.btn-provider:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.btn-provider-outline {
+    background: transparent;
+    color: #10b981;
+    border: 2px solid #10b981;
+}
+
+.btn-provider-outline:hover {
+    background: rgba(16, 185, 129, 0.1);
+    border-color: #059669;
+    color: #059669;
+    transform: translateY(-2px);
+}
+
+/* Provider registration status */
+.registration-status {
+    text-align: center;
+    padding: 2rem;
+}
+
+.status-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.status-icon.pending {
+    color: var(--warning-color);
+}
+
+.status-icon.approved {
+    color: var(--success-color);
+}
+
+.status-icon.rejected {
+    color: var(--danger-color);
+}
+
+.status-message {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.status-details {
+    background: var(--bg-color);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    text-align: left;
+}
+
+.status-details .detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.status-details .detail-row:last-child {
+    border-bottom: none;
+}
+
+.status-details .detail-label {
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.status-details .detail-value {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* Provider approvals table */
+.approvals-table {
+    width: 100%;
+}
+
+.approvals-table .user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.approvals-table .user-name {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.approvals-table .user-email {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.approvals-table .user-details {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.status-badge.pending {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--warning-color);
+}
+
+.status-badge.approved {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success-color);
+}
+
+.status-badge.rejected {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger-color);
+}
+
+/* Rejection reason modal */
+.rejection-form {
+    padding: 1.5rem;
+}
+
+.rejection-form textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 0.75rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: 1rem;
+    resize: vertical;
+}
+
+.rejection-form textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}

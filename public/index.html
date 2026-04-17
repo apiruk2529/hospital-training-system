@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ระบบจัดเก็บข้อมูลการอบรมและการประชุม โรงพยาบาลวัดเพลง">
+    <title>ระบบจัดเก็บข้อมูลการอบรม - โรงพยาบาลวัดเพลง</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/courses.css">
+    <link rel="stylesheet" href="css/mobile-nav.css">
+    <link rel="stylesheet" href="css/media-library.css">
+    <link rel="stylesheet" href="css/provider-id.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Tab Styles */
+        .user-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--primary-color);
+            background-color: var(--bg-hover);
+            border-radius: 8px 8px 0 0;
+        }
+
+        .tab-btn.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            font-weight: 600;
+            margin-bottom: -2px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .badge-count {
+            background-color: var(--danger-color, #ef4444);
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.1rem 0.4rem;
+            border-radius: 10px;
+            margin-left: 0.5rem;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Login Page Container -->
+    <div id="loginPageContainer"></div>
+
+    <!-- Main App -->
+    <div id="mainApp" class="page">
+        <!-- Navbar Container -->
+        <div id="navbarContainer"></div>
+
+        <!-- Dashboard Section Container -->
+        <div id="dashboardContainer"></div>
+
+        <!-- Records Section Container -->
+        <div id="recordsContainer"></div>
+
+        <!-- Users Section Container -->
+        <div id="usersContainer"></div>
+
+        <!-- Online Training Section Container -->
+        <div id="onlineTrainingContainer" style="display: none;"></div>
+
+        <!-- Course Detail Section Container -->
+        <div id="courseDetailContainer" style="display: none;"></div>
+
+        <!-- Media Library Section Container -->
+        <div id="mediaLibraryContainer" style="display: none;"></div>
+
+
+    </div>
+
+    <!-- Modals Container -->
+    <div id="modalsContainer"></div>
+
+    <!-- Generic Message Modal -->
+    <div id="messageModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="messageModalTitle">แจ้งเตือน</h3>
+                <span class="close-modal" onclick="closeMessageModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="messageModalText"></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeMessageModal()">ปิด</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <!-- Load Components First -->
+    <script src="js/component-loader.js"></script>
+
+    <!-- App Scripts (Will be initialized after components are loaded) -->
+    <script src="js/app.js"></script>
+    <script src="js/mobile-nav.js"></script>
+    <script src="js/courses-admin.js"></script>
+    <script src="js/quiz-admin.js"></script>
+    <script src="js/online-training.js"></script>
+    <script src="js/media-library.js"></script>
+    <script src="js/provider-auth.js"></script>
+    <script src="js/provider-approvals.js"></script>
+</body>
+
+</html>

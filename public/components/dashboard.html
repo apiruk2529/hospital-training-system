@@ -1,0 +1,42 @@
+<!-- Dashboard Section -->
+<section id="dashboardSection" class="content-section active">
+    <div class="container">
+        <div class="page-header">
+            <h2>ภาพรวมการอบรม</h2>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📚</div>
+                <div class="stat-content">
+                    <div class="stat-value" id="totalRecords">0</div>
+                    <div class="stat-label">รายการทั้งหมด</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⏱️</div>
+                <div class="stat-content">
+                    <div class="stat-value" id="totalHours">0</div>
+                    <div class="stat-label">ชั่วโมงรวม</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📅</div>
+                <div class="stat-content">
+                    <div class="stat-value" id="thisYear">0</div>
+                    <div class="stat-label">ปีนี้</div>
+                </div>
+            </div>
+            <div class="stat-card admin-only" style="display: none;">
+                <div class="stat-icon">👥</div>
+                <div class="stat-content">
+                    <div class="stat-value" id="totalUsers">0</div>
+                    <div class="stat-label">ผู้ใช้งาน</div>
+                </div>
+            </div>
+        </div>
+        <div class="recent-records">
+            <h3>รายการล่าสุด</h3>
+            <div id="recentRecordsList" class="records-list"></div>
+        </div>
+    </div>
+</section>

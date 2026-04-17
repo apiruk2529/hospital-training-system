@@ -1,0 +1,54 @@
+<!-- Provider-ID Approvals Section -->
+<section id="providerApprovalsSection" class="content-section">
+    <div class="container">
+        <div class="page-header">
+            <h2><i class="fas fa-user-check"></i> อนุมัติการลงทะเบียน Provider-ID</h2>
+            <button class="btn btn-secondary" onclick="loadPendingRegistrations()">
+                <i class="fas fa-sync"></i> รีเฟรช
+            </button>
+        </div>
+
+        <div class="table-container">
+            <table class="approvals-table">
+                <thead>
+                    <tr>
+                        <th>ข้อมูลผู้ลงทะเบียน</th>
+                        <th>เลขบัตรประชาชน</th>
+                        <th>ตำแหน่ง</th>
+                        <th>โรงพยาบาล</th>
+                        <th>วันที่ลงทะเบียน</th>
+                        <th>สถานะ</th>
+                        <th>การดำเนินการ</th>
+                    </tr>
+                </thead>
+                <tbody id="approvalsTableBody">
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 2rem;">
+                            <i class="fas fa-spinner fa-spin"></i> กำลังโหลดข้อมูล...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- Rejection Reason Modal -->
+<div id="rejectionModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>เหตุผลในการปฏิเสธ</h3>
+            <button class="modal-close" onclick="closeRejectionModal()">&times;</button>
+        </div>
+        <div class="rejection-form">
+            <div class="form-group">
+                <label for="rejectionReason">กรุณาระบุเหตุผล:</label>
+                <textarea id="rejectionReason" placeholder="ระบุเหตุผลในการปฏิเสธการลงทะเบียน..."></textarea>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-secondary" onclick="closeRejectionModal()">ยกเลิก</button>
+                <button class="btn btn-danger" onclick="confirmRejection()">ยืนยันการปฏิเสธ</button>
+            </div>
+        </div>
+    </div>
+</div>

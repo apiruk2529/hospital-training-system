@@ -1,0 +1,43 @@
+<!-- Course Detail Section -->
+<section id="courseDetailSection" class="content-section">
+    <div class="container">
+        <button id="btnBackToCourses" class="btn btn-secondary" onclick="backToCourses()">← กลับ</button>
+        <h2 id="courseDetailTitle"></h2>
+        <p id="courseDetailDescription"></p>
+
+        <div id="courseEnrollBtn" style="display: none; margin: 1rem 0;">
+            <button id="enrollButton" class="btn btn-primary btn-lg" onclick="enrollCourse()">ลงทะเบียนเรียน</button>
+        </div>
+
+        <div id="courseContent" style="display:none;">
+            <!-- Learning Progress Bar -->
+            <div class="learning-progress"
+                style="margin: 1.5rem 0; padding: 1rem; background: #f9fafb; border-radius: 8px;">
+                <h4 style="margin: 0 0 0.5rem 0; font-size: 1rem;">ความคืบหน้าการเรียน</h4>
+                <div class="progress-bar-container"
+                    style="width: 100%; height: 24px; background: #e5e7eb; border-radius: 12px; overflow: hidden; margin-bottom: 0.5rem;">
+                    <div class="progress-bar" id="learningProgressBar"
+                        style="height: 100%; background: linear-gradient(90deg, #10b981, #059669); transition: width 0.3s ease; width: 0%;">
+                    </div>
+                </div>
+                <p id="learningProgressText" style="margin: 0; font-size: 0.875rem; color: #6b7280;">เวลาเรียน:
+                    0 / 60 นาที</p>
+            </div>
+
+            <!-- Certificate Button (shown when completed) -->
+            <div id="certificateBtn" style="display: none; margin: 1rem 0;">
+                <button class="btn btn-success" onclick="viewCertificate()"
+                    style="background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 1rem; display: flex; align-items: center; gap: 8px;">
+                    📜 ดูใบรับรองการจบหลักสูตร
+                </button>
+            </div>
+
+            <h3>สื่อการเรียนรู้</h3>
+            <div id="courseMaterialsList"></div>
+            <div id="materialViewer" class="material-viewer"></div>
+
+            <h3>แบบทดสอบ</h3>
+            <div id="courseQuizzes" class="quizzes-section"></div>
+        </div>
+    </div>
+</section>

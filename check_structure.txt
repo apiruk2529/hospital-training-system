@@ -1,0 +1,200 @@
+﻿<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="เธฃเธฐเธเธเธเธฑเธ”เน€เธเนเธเธเนเธญเธกเธนเธฅเธเธฒเธฃเธญเธเธฃเธกเนเธฅเธฐเธเธฒเธฃเธเธฃเธฐเธเธธเธก เนเธฃเธเธเธขเธฒเธเธฒเธฅเธงเธฑเธ”เน€เธเธฅเธ">
+    <title>เธฃเธฐเธเธเธเธฑเธ”เน€เธเนเธเธเนเธญเธกเธนเธฅเธเธฒเธฃเธญเธเธฃเธก - เนเธฃเธเธเธขเธฒเธเธฒเธฅเธงเธฑเธ”เน€เธเธฅเธ</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/courses.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="page active">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <div class="hospital-logo">๐ฅ</div>
+                    <h1>เนเธฃเธเธเธขเธฒเธเธฒเธฅเธงเธฑเธ”เน€เธเธฅเธ</h1>
+                    <p>เธฃเธฐเธเธเธเธฑเธ”เน€เธเนเธเธเนเธญเธกเธนเธฅเธเธฒเธฃเธญเธเธฃเธกเนเธฅเธฐเธเธฒเธฃเธเธฃเธฐเธเธธเธก</p>
+                </div>
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label for="username">เธเธทเนเธญเธเธนเนเนเธเน</label>
+                        <input type="text" id="username" name="username" required autocomplete="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">เธฃเธซเธฑเธชเธเนเธฒเธ</label>
+                        <input type="password" id="password" name="password" required autocomplete="current-password">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">เน€เธเนเธฒเธชเธนเนเธฃเธฐเธเธ</button>
+                </form>
+                <div id="loginError" class="error-message"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="mainApp" class="page">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <div class="logo">๐ฅ</div>
+                    <div class="brand-text">เธฃเธฐเธเธเธเธฑเธ”เน€เธเนเธเธเนเธญเธกเธนเธฅเธเธฒเธฃเธญเธเธฃเธก</div>
+                </div>
+                <div class="nav-menu">
+                    <button id="navDashboard" class="nav-item active">
+                        <span class="icon">๐“</span>
+                        <span>เธซเธเนเธฒเธซเธฅเธฑเธ</span>
+                    </button>
+                    <button id="navRecords" class="nav-item">
+                        <span class="icon">๐“</span>
+                        <span>เธเธฃเธฐเธงเธฑเธ•เธดเธเธฒเธฃเธญเธเธฃเธก</span>
+                    </button>
+                    <button id="navOnlineTraining" class="nav-item">
+                        <span class="icon">๐“</span>
+                        <span>เธญเธเธฃเธกเธญเธญเธเนเธฅเธเน</span>
+                    </button>
+                    <button id="navUsers" class="nav-item admin-only" style="display:none;">
+                        <span class="icon">๐‘ฅ</span>
+                        <span>เธเธฑเธ”เธเธฒเธฃเธเธนเนเนเธเน</span>
+                    </button>
+                </div>
+                <div class="nav-user">
+                    <div id="navUserName" class="user-name">เธเธนเนเนเธเน</div>
+                    <button id="btnLogout" class="btn btn-secondary">เธญเธญเธเธเธฒเธเธฃเธฐเธเธ</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Dashboard Section -->
+        <section id="dashboardSection" class="content-section active">
+            <div class="container">
+                <div class="page-header">
+                    <h2>เธ เธฒเธเธฃเธงเธกเธเธฒเธฃเธญเธเธฃเธก</h2>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">๐“</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="totalRecords">0</div>
+                            <div class="stat-label">เธฃเธฒเธขเธเธฒเธฃเธ—เธฑเนเธเธซเธกเธ”</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">โฑ๏ธ</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="totalHours">0</div>
+                            <div class="stat-label">เธเธฑเนเธงเนเธกเธเธฃเธงเธก</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">๐“…</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="thisYear">0</div>
+                            <div class="stat-label">เธเธตเธเธตเน</div>
+                        </div>
+                    </div>
+                    <div class="stat-card admin-only" style="display: none;">
+                        <div class="stat-icon">๐‘ฅ</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="totalUsers">0</div>
+                            <div class="stat-label">เธเธนเนเนเธเนเธเธฒเธ</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="recent-records">
+                    <h3>เธฃเธฒเธขเธเธฒเธฃเธฅเนเธฒเธชเธธเธ”</h3>
+                    <div id="recentRecordsList" class="records-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Records Section -->
+        <section id="recordsSection" class="content-section">
+            <div class="container">
+                <div class="page-header">
+                    <h2>เธเธฃเธฐเธงเธฑเธ•เธดเธเธฒเธฃเธญเธเธฃเธกเนเธฅเธฐเธเธฒเธฃเธเธฃเธฐเธเธธเธก</h2>
+                    <button id="btnAddRecord" class="btn btn-primary">+ เน€เธเธดเนเธกเธฃเธฒเธขเธเธฒเธฃเนเธซเธกเน</button>
+                </div>
+                <div class="filters-bar">
+                    <input type="text" id="searchInput" placeholder="เธเนเธเธซเธฒ..." class="search-input">
+                    <select id="filterType" class="filter-select">
+                        <option value="">เธ—เธธเธเธเธฃเธฐเน€เธ เธ—</option>
+                    </select>
+                    <select id="filterFormat" class="filter-select">
+                        <option value="">เธ—เธธเธเธฃเธนเธเนเธเธ</option>
+                        <label for="materialTitle">เธเธทเนเธญเธชเธทเนเธญเธเธฒเธฃเน€เธฃเธตเธขเธเธฃเธนเน</label>
+                        <input type="text" id="materialTitle">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="materialType">เธเธฃเธฐเน€เธ เธ—</label>
+                        <select id="materialType">
+                            <option value="video">เธงเธดเธ”เธตเนเธญ</option>
+                            <option value="pdf">เน€เธญเธเธชเธฒเธฃ (PDF)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="videoSourceGroup" class="form-group">
+                    <label>เนเธซเธฅเนเธเธ—เธตเนเธกเธฒเธงเธดเธ”เธตเนเธญ</label>
+                    <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="videoSource" value="youtube" checked> YouTube URL
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="videoSource" value="file"> เธญเธฑเธเนเธซเธฅเธ”เนเธเธฅเน (MP4)
+                        </label>
+                    </div>
+                </div>
+
+                <div id="videoUrlGroup" class="form-group">
+                    <label for="materialVideoUrl">YouTube URL</label>
+                    <input type="url" id="materialVideoUrl" placeholder="https://www.youtube.com/watch?v=...">
+                </div>
+
+                <div id="videoFileGroup" class="form-group" style="display: none;">
+                    <label for="materialVideoFile">เนเธเธฅเนเธงเธดเธ”เธตเนเธญ (MP4, Max 500MB)</label>
+                    <input type="file" id="materialVideoFile" accept="video/mp4">
+                </div>
+
+                <div id="pdfFileGroup" class="form-group" style="display: none;">
+                    <label for="materialPdfFile">เนเธเธฅเน PDF</label>
+                    <input type="file" id="materialPdfFile" accept="application/pdf">
+                </div>
+
+                <div class="form-row" style="gap:0.5rem; align-items:end; margin-top: 1rem;">
+                    <button type="button" id="btnAddMaterial" class="btn btn-secondary" style="width: 100%;">+
+                        เน€เธเธดเนเธกเธชเธทเนเธญเธเธฒเธฃเน€เธฃเธตเธขเธเธฃเธนเน</button>
+                </div>
+
+                <div id="materialsList" style="margin-bottom:0.5rem; margin-top: 1rem;"></div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary modal-close">เธขเธเน€เธฅเธดเธ</button>
+                    <button type="submit" class="btn btn-primary">เธเธฑเธเธ—เธถเธเธซเธฅเธฑเธเธชเธนเธ•เธฃ</button>
+                </div>
+                </form>
+            </div>
+    </div>
+
+    <!-- Course Detail Section -->
+    <section id="courseDetailSection" class="content-section">
+        <div class="container">
+            <button id="btnBackToCourses" class="btn btn-secondary" onclick="backToCourses()">โ
+                เธเธฅเธฑเธ</button>
+            <h2 id="courseDetailTitle"></h2>
+            <p id="courseDetailDescription"></p>
+
+            <div id="courseEnrollBtn" style="display: none; margin: 1rem 0;">
+                <button id="enrollButton" class="btn btn-primary btn-lg"
+                    onclick="enrollCourse()">เธฅเธเธ—เธฐเน€เธเธตเธขเธเน€เธฃเธตเธขเธ</button>
+            </div>
+

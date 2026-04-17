@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Video Test - WPH Training System</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 10px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-left: 4px solid #007bff;
+            border-radius: 4px;
+        }
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #000;
+            margin: 20px 0;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .result {
+            margin: 15px 0;
+            padding: 10px;
+            background: #e8f4f8;
+            border-radius: 4px;
+            font-family: monospace;
+            word-break: break-all;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎥 YouTube Video Test - WPH Training System</h1>
+        
+        <div class="test-section">
+            <h2>ทดสอบลิงก์วิดีโอ YouTube</h2>
+            <p>ป้อน URL ลิงก์วิดีโอ YouTube เพื่อทดสอบว่ากำลังทำงานถูกต้องหรือไม่</p>
+            
+            <label>YouTube URL:</label>
+            <input type="text" id="youtubeUrl" value="https://www.youtube.com/watch?v=CmPvaKibA6o" placeholder="https://www.youtube.com/watch?v=...">
+            
+            <button onclick="testYouTubeLink()">🔍 ทดสอบลิงก์</button>
+            
+            <div id="resultArea"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>🧪 ตัวอย่างการเล่นวิดีโอ</h2>
+            <div id="previewArea"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>📝 ข้อมูลการทดสอบ</h2>
+            <p><strong>URL ทดสอบ:</strong> <code>https://www.youtube.com/watch?v=CmPvaKibA6o</code></p>
+            <p><strong>Video ID ที่ควรได้:</strong> <code>CmPvaKibA6o</code></p>
+            <p><strong>Embed URL ที่ควรได้:</strong> <code>https://www.youtube.com/embed/CmPvaKibA6o</code></p>
+        </div>
+    </div>
+
+    <script>
+        function getYouTubeID(url) {
+            if (!url) return null;
+            
+            // Try multiple regex patterns to match different YouTube URL formats
+            const patterns = [
+                /(?:youtube\.com\/watch\?v=|youtu.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
+                /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/
+            ];
+            
+            for (let pattern of patterns) {
+                const match = url.match(pattern);
+                if (match && match[1] && match[1].length === 11) {
+                    return match[1];
+                }
+            }
+            
+            return null;
+        }
+
+        function testYouTubeLink() {
+            const urlInput = document.getElementById('youtubeUrl').value;
+            const resultArea = document.getElementById('resultArea');
+            const previewArea = document.getElementById('previewArea');
+            
+            resultArea.innerHTML = '';
+            previewArea.innerHTML = '';
+            
+            if (!urlInput) {
+                resultArea.innerHTML = '<div class="result error">❌ กรุณาป้อน URL ลิงก์วิดีโอ</div>';
+                return;
+            }
+
+            const videoId = getYouTubeID(urlInput);
+            
+            if (!videoId) {
+                resultArea.innerHTML = `<div class="result error">❌ ไม่สามารถแยกหมายเลข Video ID ได้<br/>URL ที่ป้อน: ${urlInput}</div>`;
+                return;
+            }
+
+            if (videoId.length !== 11) {
+                resultArea.innerHTML = `<div class="result error">❌ Video ID ไม่ถูกต้อง (ต้องเป็น 11 ตัวอักษร)<br/>ได้: <code>${videoId}</code> (${videoId.length} ตัวอักษร)</div>`;
+                return;
+            }
+
+            const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+            
+            resultArea.innerHTML = `
+                <div class="result success">
+                    ✅ <strong>สำเร็จ!</strong><br/>
+                    <strong>URL ต้นฉบับ:</strong> <code>${urlInput}</code><br/>
+                    <strong>Video ID:</strong> <code>${videoId}</code> ✓<br/>
+                    <strong>Embed URL:</strong> <code>${embedUrl}</code>
+                </div>
+            `;
+
+            // Show preview
+            previewArea.innerHTML = `
+                <p><strong>ตัวอย่างการเล่น:</strong></p>
+                <div class="video-container">
+                    <iframe 
+                        src="${embedUrl}" 
+                        title="YouTube Video"
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen="allowfullscreen"
+                        loading="lazy">
+                    </iframe>
+                </div>
+            `;
+        }
+
+        // Test on load
+        window.addEventListener('load', () => {
+            testYouTubeLink();
+        });
+
+        // Allow Enter key
+        document.getElementById('youtubeUrl').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                testYouTubeLink();
+            }
+        });
+    </script>
+</body>
+</html>
