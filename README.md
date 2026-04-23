@@ -3,68 +3,154 @@
 
 ระบบจัดเก็บและจัดการข้อมูลประวัติการอบรมและการประชุมของเจ้าหน้าที่โรงพยาบาลวัดเพลง
 
+---
+
 ## ✨ คุณสมบัติหลัก
 
-- 🔐 **ระบบ Authentication** - เข้าสู่ระบบด้วย JWT
+- 🔐 **ระบบ Authentication** — เข้าสู่ระบบด้วย JWT + MOPH Provider-ID
 - 👥 **สิทธิ์การใช้งาน 2 ระดับ**
   - **Admin**: จัดการข้อมูลทั้งหมด, จัดการผู้ใช้
   - **User**: ดูและจัดการประวัติของตนเอง
-- 📚 **จัดการข้อมูลการอบรม/การประชุม**
-  - เพิ่ม/แก้ไข/ลบข้อมูล
-  - ค้นหาและกรองข้อมูล
-  - บันทึกรายละเอียดครบถ้วน
-- 📊 **Dashboard** - แสดงสถิติและภาพรวม
-- 🎨 **UI/UX สวยงาม** - ออกแบบทันสมัย responsive
+- 📚 **จัดการข้อมูลการอบรม/การประชุม** — เพิ่ม/แก้ไข/ลบ, ค้นหา, กรองข้อมูล
+- 🎓 **หลักสูตรออนไลน์** — วิดีโอ, PDF, แบบทดสอบก่อน-หลังเรียน
+- 📁 **คลังสื่อ** — อัปโหลดและจัดการไฟล์ภาพ, PDF, วิดีโอ
+- 📊 **Dashboard** — สถิติและภาพรวมการอบรม
+- 🎨 **UI/UX สวยงาม** — ออกแบบทันสมัย Responsive
+
+---
 
 ## 🛠️ เทคโนโลยีที่ใช้
 
-### Backend
-- Node.js + Express.js
-- MySQL Database
-- JWT Authentication
-- bcrypt (Password Hashing)
+| Layer | Technology |
+|-------|-----------|
+| Runtime | Node.js 20 + Express.js |
+| Database | MySQL 8.0 |
+| Auth | JWT + bcrypt + MOPH Provider-ID OAuth |
+| Frontend | HTML5 / CSS3 / Vanilla JavaScript |
+| Container | Docker + Docker Compose |
 
-### Frontend
-- HTML5
-- CSS3 (Modern Design)
-- Vanilla JavaScript
-- Responsive Design
+---
 
-## 📋 ข้อกำหนดระบบ
+## 🚀 วิธีติดตั้ง
 
-- Node.js 14+ 
-- MySQL 5.7+
-- npm หรือ yarn
+เลือกวิธีที่เหมาะกับคุณ:
 
-## 🚀 การติดตั้ง
+> 🐳 **แนะนำ**: ใช้ Docker — ง่ายที่สุด ไม่ต้องติดตั้ง MySQL เอง
 
-### 1. Clone โปรเจค
+---
+
+### 🐳 วิธีที่ 1: Docker (แนะนำ)
+
+#### สิ่งที่ต้องมี
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (รวม Docker Compose)
+- Git
+
+#### ขั้นตอน
+
+**1. Clone โปรเจกต์**
 ```bash
+git clone https://github.com/apiruk2529/hospital-training-system.git
 cd hospital-training-system
 ```
 
-### 2. ติดตั้ง Dependencies
+**2. สร้างไฟล์ `.env`**
+
+```bash
+# Windows PowerShell
+Copy-Item .env.docker .env
+
+# Linux / macOS
+cp .env.docker .env
+```
+
+เปิดไฟล์ `.env` แล้วแก้ค่าเหล่านี้ก่อน deploy:
+
+```env
+DB_ROOT_PASSWORD=รหัสผ่าน root MySQL ที่ต้องการ
+DB_PASSWORD=รหัสผ่าน user MySQL ที่ต้องการ
+JWT_SECRET=ค่าสุ่มที่ยาวและซับซ้อน (สำคัญมาก!)
+```
+
+**3. รัน Docker**
+```bash
+docker compose up -d
+```
+
+Docker จะทำทุกอย่างอัตโนมัติ:
+- ✅ ดาวน์โหลด MySQL 8 image
+- ✅ Build Node.js app image
+- ✅ สร้าง database + tables + seed data
+- ✅ เปิด app ที่ port 3000
+
+**4. เปิดเบราว์เซอร์**
+
+```
+http://localhost:3000
+```
+
+---
+
+#### 📋 คำสั่ง Docker ที่ใช้บ่อย
+
+```bash
+# ดู log แบบ real-time
+docker compose logs -f
+
+# ดู status ทุก service
+docker compose ps
+
+# หยุด containers (ข้อมูลยังอยู่)
+docker compose stop
+
+# เริ่มใหม่
+docker compose start
+
+# หยุดและลบ containers (ข้อมูลใน volume ยังอยู่)
+docker compose down
+
+# อัปเดตโค้ด (หลัง git pull)
+git pull
+docker compose up -d --build app
+
+# เข้าไปใน container
+docker compose exec app sh
+docker compose exec db mysql -u root -p
+```
+
+---
+
+### 💻 วิธีที่ 2: ติดตั้งแบบ Manual
+
+#### สิ่งที่ต้องมี
+- Node.js 18+
+- MySQL 8.0
+- npm
+
+#### ขั้นตอน
+
+**1. Clone โปรเจกต์**
+```bash
+git clone https://github.com/apiruk2529/hospital-training-system.git
+cd hospital-training-system
+```
+
+**2. ติดตั้ง Dependencies**
 ```bash
 npm install
 ```
 
-### 3. ตั้งค่า Database
-
-สร้างฐานข้อมูล MySQL:
+**3. สร้างฐานข้อมูล MySQL**
 ```bash
-mysql -u root -p < database/schema.sql
+mysql -u root -p < database/init/01_init.sql
 ```
 
-หรือเข้า MySQL แล้วรัน:
-```sql
-source database/schema.sql
-```
-
-### 4. ตั้งค่า Environment Variables
-
-คัดลอกไฟล์ `.env.example` เป็น `.env`:
+**4. สร้างไฟล์ `.env`**
 ```bash
-copy .env.example .env
+# Windows
+Copy-Item .env.example .env
+
+# Linux / macOS
+cp .env.example .env
 ```
 
 แก้ไขไฟล์ `.env`:
@@ -73,132 +159,166 @@ PORT=3000
 DB_HOST=localhost
 DB_PORT=3306
 DB_USER=root
-DB_PASSWORD=your_password
+DB_PASSWORD=รหัสผ่าน MySQL ของคุณ
 DB_NAME=wph_training_db
-JWT_SECRET=your_secret_key_here
+JWT_SECRET=ค่าสุ่มที่ยาวและซับซ้อน
 ```
 
-### 5. รันเซิร์ฟเวอร์
+**5. รันเซิร์ฟเวอร์**
 
-Development mode:
+Development:
 ```bash
 npm run dev
 ```
 
-Production mode:
+Production:
 ```bash
 npm start
 ```
 
 เปิดเบราว์เซอร์ที่: `http://localhost:3000`
 
+---
+
 ## 👤 บัญชีเริ่มต้น
 
-### Admin Account
-- **Username**: `admin`
-- **Password**: `admin123`
+> ⚠️ **เปลี่ยนรหัสผ่านทันทีหลัง login ครั้งแรก!**
 
-### User Account (ทดสอบ)
-- **Username**: `user001`
-- **Password**: `user123`
+| วิธีติดตั้ง | Username | Password |
+|------------|----------|----------|
+| Docker | `admin` | `password` |
+| Manual | `admin` | `admin123` |
 
-⚠️ **สำคัญ**: เปลี่ยนรหัสผ่านทันทีหลังติดตั้ง!
+---
 
-## 📁 โครงสร้างโปรเจค
+## 📁 โครงสร้างโปรเจกต์
 
 ```
 hospital-training-system/
-├── database/
-│   └── schema.sql              # Database schema
-├── server/
+├── 🐳 Docker Files
+│   ├── Dockerfile                  # Build Node.js image
+│   ├── docker-compose.yml          # App + MySQL services
+│   ├── .dockerignore               # ไม่ copy ไฟล์ที่ไม่จำเป็น
+│   └── .env.docker                 # Template config สำหรับ Docker
+│
+├── 🗄️ database/
+│   ├── init/
+│   │   └── 01_init.sql             # Schema + migrations + seed (Docker)
+│   ├── schema.sql                  # Schema เดิม (Manual)
+│   ├── media_library_migration.sql
+│   └── provider_id_migration.sql
+│
+├── 🖥️ server/
 │   ├── config/
-│   │   └── database.js         # Database connection
+│   │   └── database.js             # Database connection
 │   ├── middleware/
-│   │   └── auth.js             # Authentication middleware
+│   │   └── auth.js                 # Authentication middleware
 │   ├── routes/
-│   │   ├── auth.js             # Authentication routes
-│   │   ├── users.js            # User management routes
-│   │   └── training.js         # Training records routes
-│   └── server.js               # Main server file
-├── public/
+│   │   ├── auth.js                 # Authentication
+│   │   ├── users.js                # User management
+│   │   ├── training.js             # Training records
+│   │   ├── courses.js              # Online courses
+│   │   ├── media.js                # Media library
+│   │   └── provider-auth.js        # MOPH Provider-ID OAuth
+│   └── server.js                   # Entry point
+│
+├── 🌐 public/                      # Frontend (HTML/CSS/JS)
+│   ├── components/
 │   ├── css/
-│   │   └── style.css           # Styles
 │   ├── js/
-│   │   └── app.js              # Frontend JavaScript
-│   └── index.html              # Main HTML
-├── .env.example                # Environment variables template
-├── package.json                # Dependencies
-└── README.md                   # This file
+│   └── index.html
+│
+├── 📦 uploads/                     # ไฟล์ที่ upload (สร้างอัตโนมัติ)
+├── .env.example                    # Template config สำหรับ Manual
+├── .env.docker                     # Template config สำหรับ Docker
+├── package.json
+└── README.md
 ```
+
+---
 
 ## 🔌 API Endpoints
 
 ### Authentication
-- `POST /api/auth/login` - เข้าสู่ระบบ
-- `GET /api/auth/me` - ข้อมูลผู้ใช้ปัจจุบัน
-- `POST /api/auth/change-password` - เปลี่ยนรหัสผ่าน
+| Method | Endpoint | คำอธิบาย |
+|--------|----------|----------|
+| POST | `/api/auth/login` | เข้าสู่ระบบ |
+| GET | `/api/auth/me` | ข้อมูลผู้ใช้ปัจจุบัน |
+| POST | `/api/auth/change-password` | เปลี่ยนรหัสผ่าน |
 
 ### Training Records
-- `GET /api/training` - ดึงข้อมูลการอบรมทั้งหมด
-- `GET /api/training/:id` - ดึงข้อมูลการอบรมตาม ID
-- `POST /api/training` - สร้างข้อมูลการอบรมใหม่
-- `PUT /api/training/:id` - แก้ไขข้อมูลการอบรม
-- `DELETE /api/training/:id` - ลบข้อมูลการอบรม
-- `GET /api/training/meta/activity-types` - ดึงประเภทกิจกรรม
-- `GET /api/training/meta/format-types` - ดึงรูปแบบการจัด
+| Method | Endpoint | คำอธิบาย |
+|--------|----------|----------|
+| GET | `/api/training` | ดึงข้อมูลการอบรมทั้งหมด |
+| POST | `/api/training` | สร้างข้อมูลการอบรมใหม่ |
+| PUT | `/api/training/:id` | แก้ไขข้อมูลการอบรม |
+| DELETE | `/api/training/:id` | ลบข้อมูลการอบรม |
 
 ### Users (Admin Only)
-- `GET /api/users` - ดึงข้อมูลผู้ใช้ทั้งหมด
-- `GET /api/users/:id` - ดึงข้อมูลผู้ใช้ตาม ID
-- `POST /api/users` - สร้างผู้ใช้ใหม่
-- `PUT /api/users/:id` - แก้ไขข้อมูลผู้ใช้
-- `DELETE /api/users/:id` - ลบผู้ใช้
+| Method | Endpoint | คำอธิบาย |
+|--------|----------|----------|
+| GET | `/api/users` | ดึงข้อมูลผู้ใช้ทั้งหมด |
+| POST | `/api/users` | สร้างผู้ใช้ใหม่ |
+| PUT | `/api/users/:id` | แก้ไขข้อมูลผู้ใช้ |
+| DELETE | `/api/users/:id` | ลบผู้ใช้ |
+
+### Health Check
+| Method | Endpoint | คำอธิบาย |
+|--------|----------|----------|
+| GET | `/api/health` | ตรวจสอบสถานะ server |
+
+---
 
 ## 🔒 Security Features
 
 - JWT Token Authentication
 - Password Hashing (bcrypt)
-- SQL Injection Protection
+- SQL Injection Protection (Parameterized queries)
 - XSS Protection (Helmet.js)
-- Rate Limiting
+- Rate Limiting (100 req / 15 min)
 - CORS Configuration
 
-## 📝 การใช้งาน
-
-### สำหรับ Admin
-1. เข้าสู่ระบบด้วยบัญชี Admin
-2. จัดการผู้ใช้งานในเมนู "จัดการผู้ใช้"
-3. ดูข้อมูลการอบรมของทุกคน
-4. เพิ่ม/แก้ไข/ลบข้อมูลการอบรมได้ทั้งหมด
-
-### สำหรับ User
-1. เข้าสู่ระบบด้วยบัญชีของตนเอง
-2. ดูประวัติการอบรมของตนเอง
-3. เพิ่ม/แก้ไข/ลบข้อมูลการอบรมของตนเอง
+---
 
 ## 🐛 Troubleshooting
 
-### ไม่สามารถเชื่อมต่อ Database
-- ตรวจสอบว่า MySQL Server ทำงานอยู่
-- ตรวจสอบ username/password ในไฟล์ `.env`
-- ตรวจสอบว่าได้สร้างฐานข้อมูลแล้ว
+### 🐳 Docker
 
-### Login ไม่ได้
-- ตรวจสอบว่าได้รัน schema.sql แล้ว
-- ตรวจสอบ JWT_SECRET ในไฟล์ `.env`
+| ปัญหา | วิธีแก้ |
+|-------|---------|
+| App ไม่เปิด port 3000 | ตรวจสอบ `docker compose ps` ว่า status เป็น `healthy` |
+| Database ยังไม่พร้อม | รอ 30-60 วินาทีหลัง `docker compose up -d` แล้ว refresh |
+| Port 3000 ถูกใช้งานอยู่ | แก้ `APP_PORT=8080` ใน `.env` แล้วรัน `docker compose up -d` ใหม่ |
+| ต้องการ reset ข้อมูลทั้งหมด | `docker compose down -v` แล้ว `docker compose up -d` ใหม่ |
+
+```bash
+# ดู error log
+docker compose logs app
+docker compose logs db
+```
+
+### 💻 Manual
+
+| ปัญหา | วิธีแก้ |
+|-------|---------|
+| เชื่อมต่อ Database ไม่ได้ | ตรวจสอบว่า MySQL Server ทำงานอยู่ และค่าใน `.env` ถูกต้อง |
+| Login ไม่ได้ | ตรวจสอบว่าได้รัน `01_init.sql` แล้ว และ `JWT_SECRET` ถูกตั้งค่า |
+| ภาษาไทยแสดงผิด | ตรวจสอบ charset ของ MySQL ว่าเป็น `utf8mb4` |
+
+---
 
 ## 📞 ติดต่อ
 
-โรงพยาบาลวัดเพลง  
+**โรงพยาบาลวัดเพลง**  
 แผนก IT  
 Email: admin@wph.go.th
 
 ## 📄 License
 
-MIT License - ใช้งานได้อย่างอิสระ
+MIT License — ใช้งานได้อย่างอิสระ
 
 ---
 
 พัฒนาโดย: WPH IT Department  
-Version: 1.0.0  
-Last Updated: 2025
+Version: 1.1.0  
+Last Updated: 2026
