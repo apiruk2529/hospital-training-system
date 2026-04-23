@@ -1,0 +1,93 @@
+# ============================================================
+# docker-compose.yml - WPH Hospital Training System
+# Services: app (Node.js) + db (MySQL 8)
+# ============================================================
+
+version: '3.9'
+
+services:
+  # ── MySQL Database ───────────────────────────────────────
+  db:
+    image: mysql:8.0
+    container_name: wph_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${DB_NAME:-wph_training_db}
+      MYSQL_USER: ${DB_USER:-web}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-web11277}
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./database/init:/docker-entrypoint-initdb.d:ro
+    networks:
+      - wph_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD:-rootpassword}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    command: >
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+      --default-time-zone=+07:00
+      --innodb-buffer-pool-size=256M
+
+  # ── Node.js Application ──────────────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: wph_app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: 3000
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: ${DB_USER:-web}
+      DB_PASSWORD: ${DB_PASSWORD:-web11277}
+      DB_NAME: ${DB_NAME:-wph_training_db}
+      JWT_SECRET: ${JWT_SECRET:-change-this-secret-in-production}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-24h}
+      CORS_ORIGIN: ${CORS_ORIGIN:-*}
+      UPLOAD_DIR: ./uploads
+      MAX_FILE_SIZE: ${MAX_FILE_SIZE:-5242880}
+      MOPH_CLIENT_ID: ${MOPH_CLIENT_ID:-}
+      MOPH_CLIENT_SECRET: ${MOPH_CLIENT_SECRET:-}
+      PROVIDER_ID_CLIENT_ID: ${PROVIDER_ID_CLIENT_ID:-}
+      PROVIDER_ID_CLIENT_SECRET: ${PROVIDER_ID_CLIENT_SECRET:-}
+      PROVIDER_ID_REDIRECT_URI: ${PROVIDER_ID_REDIRECT_URI:-}
+      PROVIDER_ID_OAUTH_URL: ${PROVIDER_ID_OAUTH_URL:-https://moph.id.th/oauth/redirect}
+      PROVIDER_ID_TOKEN_URL: ${PROVIDER_ID_TOKEN_URL:-https://provider.id.th/api/v1/token}
+      PROVIDER_ID_USER_INFO_URL: ${PROVIDER_ID_USER_INFO_URL:-https://provider.id.th/api/v1/service/profile}
+      TZ: Asia/Bangkok
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    volumes:
+      - uploads_data:/app/uploads
+    networks:
+      - wph_network
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+# ── Volumes ──────────────────────────────────────────────
+volumes:
+  db_data:
+    driver: local
+  uploads_data:
+    driver: local
+
+# ── Networks ─────────────────────────────────────────────
+networks:
+  wph_network:
+    driver: bridge

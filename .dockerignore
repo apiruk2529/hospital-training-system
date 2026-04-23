@@ -1,0 +1,24 @@
+node_modules/
+.env
+.git/
+.github/
+uploads/
+*.log
+*.md
+.DS_Store
+Thumbs.db
+
+# Debug / check scripts (not needed in container)
+check-*.js
+debug-*.js
+test-*.js
+verify_*.js
+find-*.js
+fix-*.js
+reset_*.js
+run-*.js
+create-*.js
+show-*.js
+
+# Bat files
+*.bat

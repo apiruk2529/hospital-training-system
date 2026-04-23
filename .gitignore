@@ -1,6 +1,19 @@
 node_modules/
+
+# ไฟล์ secret จริง (ห้าม commit)
 .env
+
+# ไฟล์ template ที่ควร commit (ไม่มี secret จริง)
+# .env.example  <-- commit ได้
+# .env.docker   <-- commit ได้
+
+# Uploads (ไฟล์ที่ user upload)
 uploads/
+
+# Logs
 *.log
+provider_debug.log
+
+# OS files
 .DS_Store
 Thumbs.db
