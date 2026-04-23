@@ -41,8 +41,128 @@
 
 ### 🐳 วิธีที่ 1: Docker (แนะนำ)
 
+---
+
+#### 🔧 ติดตั้ง Docker (ทำครั้งแรกครั้งเดียว)
+
+<details>
+<summary><b>🪟 Windows / 🍎 macOS</b> — คลิกเพื่อดู</summary>
+
+ดาวน์โหลดและติดตั้ง **Docker Desktop** (รวม Docker Compose ในตัว):
+
+👉 https://www.docker.com/products/docker-desktop/
+
+หลังติดตั้ง เปิด Docker Desktop แล้วรอให้ status เป็น **Running** ก่อนใช้งาน
+
+</details>
+
+<details>
+<summary><b>🐧 Linux (Ubuntu / Debian)</b> — คลิกเพื่อดู</summary>
+
+**ขั้นตอนที่ 1 — ลบ Docker เวอร์ชันเก่า (ถ้ามี)**
+```bash
+sudo apt remove docker docker-engine docker.io containerd runc
+```
+
+**ขั้นตอนที่ 2 — เพิ่ม Docker repository**
+```bash
+sudo apt update
+sudo apt install -y ca-certificates curl gnupg
+
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
+  | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+  https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" \
+  | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
+
+**ขั้นตอนที่ 3 — ติดตั้ง Docker Engine + Compose**
+```bash
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io \
+                   docker-buildx-plugin docker-compose-plugin
+```
+
+**ขั้นตอนที่ 4 — เปิด Docker ให้รันตอน boot**
+```bash
+sudo systemctl enable docker
+sudo systemctl start docker
+```
+
+**ขั้นตอนที่ 5 — ให้ใช้ Docker ได้โดยไม่ต้องพิมพ์ `sudo`**
+```bash
+sudo usermod -aG docker $USER
+newgrp docker
+```
+
+**ตรวจสอบการติดตั้ง**
+```bash
+docker --version
+docker compose version
+```
+
+ผลลัพธ์ที่ถูกต้อง:
+```
+Docker version 27.x.x, build ...
+Docker Compose version v2.x.x
+```
+
+</details>
+
+<details>
+<summary><b>🐧 Linux (CentOS / RHEL / AlmaLinux)</b> — คลิกเพื่อดู</summary>
+
+**ขั้นตอนที่ 1 — ลบ Docker เวอร์ชันเก่า (ถ้ามี)**
+```bash
+sudo yum remove docker docker-client docker-client-latest \
+               docker-common docker-latest docker-latest-logrotate \
+               docker-logrotate docker-engine
+```
+
+**ขั้นตอนที่ 2 — เพิ่ม Docker repository**
+```bash
+sudo yum install -y yum-utils
+sudo yum-config-manager \
+  --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+```
+
+**ขั้นตอนที่ 3 — ติดตั้ง Docker Engine + Compose**
+```bash
+sudo yum install -y docker-ce docker-ce-cli containerd.io \
+                   docker-buildx-plugin docker-compose-plugin
+```
+
+**ขั้นตอนที่ 4 — เปิด Docker ให้รันตอน boot**
+```bash
+sudo systemctl enable docker
+sudo systemctl start docker
+```
+
+**ขั้นตอนที่ 5 — ให้ใช้ Docker ได้โดยไม่ต้องพิมพ์ `sudo`**
+```bash
+sudo usermod -aG docker $USER
+newgrp docker
+```
+
+**ตรวจสอบ**
+```bash
+docker --version
+docker compose version
+```
+
+</details>
+
+---
+
+#### 🚀 Deploy โปรเจกต์
+
 #### สิ่งที่ต้องมี
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (รวม Docker Compose)
+- Docker (ติดตั้งแล้วตามด้านบน)
 - Git
 
 #### ขั้นตอน
