@@ -422,16 +422,136 @@
             const img = document.createElement('img');
             img.src = media.file_path.startsWith('/') ? media.file_path : '/' + media.file_path;
             img.alt = media.title;
+            img.style.maxWidth = '100%';
+            img.style.borderRadius = '8px';
             content.appendChild(img);
         } else if (media.file_type === 'pdf') {
-            const iframe = document.createElement('iframe');
-            iframe.src = media.file_path.startsWith('/') ? media.file_path : '/' + media.file_path;
-            content.appendChild(iframe);
+            const pdfPath = media.file_path.startsWith('/') ? media.file_path : '/' + media.file_path;
+            
+            // Create wrapper container
+            const wrapper = document.createElement('div');
+            wrapper.style.position = 'relative';
+            wrapper.style.width = '100%';
+            wrapper.style.height = '500px';
+            
+            // Try using object tag first (more compatible than iframe for PDFs)
+            const pdfViewer = document.createElement('object');
+            pdfViewer.setAttribute('data', pdfPath);
+            pdfViewer.setAttribute('type', 'application/pdf');
+            pdfViewer.style.width = '100%';
+            pdfViewer.style.height = '500px';
+            pdfViewer.style.border = 'none';
+            pdfViewer.style.borderRadius = '8px';
+            
+            // Fallback iframe approach for browsers that don't support object tag well
+            let hasDisplayed = false;
+            
+            pdfViewer.onerror = () => {
+                console.warn('Object tag failed, trying iframe approach');
+                tryIframeApproach();
+            };
+            
+            // Set timeout to try alternative approach if object doesn't load
+            const loadTimeout = setTimeout(() => {
+                if (!hasDisplayed) {
+                    console.warn('PDF object tag didn\'t load within 2 seconds, trying iframe');
+                    tryIframeApproach();
+                }
+            }, 2000);
+            
+            pdfViewer.onload = () => {
+                hasDisplayed = true;
+                clearTimeout(loadTimeout);
+                console.log('PDF loaded successfully via object tag');
+            };
+            
+            function tryIframeApproach() {
+                if (hasDisplayed) return; // Already loaded
+                hasDisplayed = true;
+                clearTimeout(loadTimeout);
+                
+                wrapper.innerHTML = '';
+                
+                // Try iframe with data URL encoding
+                const iframe = document.createElement('iframe');
+                iframe.setAttribute('src', pdfPath + '#toolbar=0&navpanes=0&scrollbar=0');
+                iframe.style.width = '100%';
+                iframe.style.height = '500px';
+                iframe.style.border = 'none';
+                iframe.style.borderRadius = '8px';
+                
+                // Add fallback message after delay
+                const iframeFailTimeout = setTimeout(() => {
+                    // Check if iframe is still empty by trying to access its content
+                    try {
+                        if (!iframe.contentDocument || iframe.contentDocument.body.innerHTML === '') {
+                            showPdfError(wrapper, media.media_id);
+                        }
+                    } catch (e) {
+                        // Cross-origin or access denied
+                        showPdfError(wrapper, media.media_id);
+                    }
+                }, 3000);
+                
+                iframe.onerror = () => {
+                    clearTimeout(iframeFailTimeout);
+                    showPdfError(wrapper, media.media_id);
+                };
+                
+                wrapper.appendChild(iframe);
+            }
+            
+            wrapper.appendChild(pdfViewer);
+            content.appendChild(wrapper);
+            
         } else if (media.file_type === 'video') {
             const video = document.createElement('video');
             video.src = media.file_path.startsWith('/') ? media.file_path : '/' + media.file_path;
             video.controls = true;
+            video.style.maxWidth = '100%';
+            video.style.borderRadius = '8px';
             content.appendChild(video);
+        }
+        
+        // Helper function to show PDF error message
+        function showPdfError(container, mediaId) {
+            container.innerHTML = '';
+            
+            const errorDiv = document.createElement('div');
+            errorDiv.style.padding = '40px 20px';
+            errorDiv.style.textAlign = 'center';
+            errorDiv.style.background = '#f8f9fa';
+            errorDiv.style.borderRadius = '8px';
+            errorDiv.style.height = '100%';
+            errorDiv.style.display = 'flex';
+            errorDiv.style.flexDirection = 'column';
+            errorDiv.style.justifyContent = 'center';
+            
+            const warningTitle = document.createElement('p');
+            warningTitle.style.margin = '10px 0';
+            warningTitle.style.color = '#666';
+            warningTitle.style.fontSize = '16px';
+            warningTitle.textContent = '⚠️ ไม่สามารถแสดง PDF ได้ในบราวเซอร์นี้';
+            
+            const warningText = document.createElement('p');
+            warningText.style.margin = '5px 0';
+            warningText.style.color = '#999';
+            warningText.style.fontSize = '14px';
+            warningText.textContent = 'PDF อาจมีรูปแบบพิเศษหรือบราวเซอร์ของคุณไม่รองรับ';
+            
+            const downloadBtn = document.createElement('button');
+            downloadBtn.className = 'btn btn-primary';
+            downloadBtn.style.marginTop = '15px';
+            downloadBtn.style.marginLeft = 'auto';
+            downloadBtn.style.marginRight = 'auto';
+            downloadBtn.innerHTML = '⬇️ ดาวน์โหลด PDF';
+            downloadBtn.onclick = () => downloadMedia(mediaId);
+            
+            errorDiv.appendChild(warningTitle);
+            errorDiv.appendChild(warningText);
+            errorDiv.appendChild(downloadBtn);
+            
+            container.appendChild(errorDiv);
         }
 
         const info = document.getElementById('previewInfo');

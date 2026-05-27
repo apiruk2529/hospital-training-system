@@ -568,6 +568,23 @@
     border-radius: 8px;
 }
 
+.pdf-error-message {
+    padding: 40px 20px;
+    text-align: center;
+    background: #f8f9fa;
+    border-radius: 8px;
+    color: #666;
+}
+
+.pdf-error-message p {
+    margin: 10px 0;
+    font-size: 14px;
+}
+
+.pdf-error-message .btn {
+    margin-top: 15px;
+}
+
 .preview-info {
     background: white;
 }
