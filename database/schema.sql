@@ -1,5 +1,5 @@
 -- Database Schema for Wat Phleng Hospital Training System
--- โรงพยาบาลวัดเพลง - ระบบจัดเก็บข้อมูลการอบรมและการประชุม
+-- โรงพยาบาลวัดเพลง - ระบบจัดเก็บคลังข้อมูลสุขภาพ
 
 CREATE DATABASE IF NOT EXISTS wph_training_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE wph_training_db;
