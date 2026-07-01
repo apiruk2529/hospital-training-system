@@ -367,13 +367,13 @@ INSERT INTO departments (department_name, description) VALUES
 ON DUPLICATE KEY UPDATE department_name = VALUES(department_name);
 
 -- ── 7. Default Admin User ──────────────────────────────────
--- Password: Admin@WPH2024  (bcrypt hash generated fresh)
+-- Password: admin123  (bcrypt hash generated fresh)
 -- *** เปลี่ยน password ทันทีหลัง deploy จริง ***
 INSERT INTO users (employee_id, username, password_hash, full_name, email, position, department, role, auth_method, approval_status)
 VALUES (
     'WPH-ADMIN',
     'admin',
-    '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+    '$2b$10$4/A62l9NYkmFNlXrSwSXsuxwgQMMnhghlUMMykEVoIltPBy0uXyDi',
     'ผู้ดูแลระบบ',
     'admin@wph.go.th',
     'ผู้ดูแลระบบ',

@@ -309,9 +309,23 @@ Development:
 npm run dev
 ```
 
-Production:
+Production (ใช้ PM2 เพื่อให้ระบบทำงานอัตโนมัติเมื่อ Restart เครื่อง):
 ```bash
-npm start
+# 1. ติดตั้ง PM2 (ถ้ายังไม่มี)
+npm install -g pm2
+
+# 2. รันเซิร์ฟเวอร์ด้วย PM2
+pm2 start npm --name "wph-training" -- start
+
+# 3. ตั้งค่าให้เปิดทำงานอัตโนมัติ
+# สำหรับ Linux:
+pm2 startup
+pm2 save
+
+# สำหรับ Windows:
+npm install -g pm2-windows-startup
+pm2-startup install
+pm2 save
 ```
 
 เปิดเบราว์เซอร์ที่: `http://localhost:3000`
