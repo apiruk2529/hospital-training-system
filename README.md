@@ -314,8 +314,8 @@ Production (ใช้ PM2 เพื่อให้ระบบทำงานอ
 # 1. ติดตั้ง PM2 (ถ้ายังไม่มี)
 npm install -g pm2
 
-# 2. รันเซิร์ฟเวอร์ด้วย PM2
-pm2 start npm --name "wph-training" -- start
+# 2. รันเซิร์ฟเวอร์ด้วย PM2 (แนะนำให้รันไฟล์ server.js โดยตรง)
+pm2 start server/server.js --name "wph-training"
 
 # 3. ตั้งค่าให้เปิดทำงานอัตโนมัติ
 # สำหรับ Linux:
@@ -323,6 +323,8 @@ pm2 startup
 pm2 save
 
 # สำหรับ Windows:
+# หาก pm2-windows-startup ติดตั้งไม่ผ่าน (Error) แนะนำให้ข้ามการตั้งค่าแบบ Auto 
+# หรือใช้โปรแกรมภายนอกอย่าง NSSM ในการทำ Windows Service แทนครับ
 npm install -g pm2-windows-startup
 pm2-startup install
 pm2 save
