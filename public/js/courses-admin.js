@@ -240,6 +240,17 @@ function removeMaterial(index) {
 async function handleCourseSubmit(e) {
     e.preventDefault();
 
+    // Check if user forgot to click "+ Add Material"
+    const matTitle = document.getElementById('materialTitle').value.trim();
+    const matVideoUrl = document.getElementById('materialVideoUrl').value.trim();
+    const matVideoFile = document.getElementById('materialVideoFile').files.length > 0;
+    const matPdfFile = document.getElementById('materialPdfFile').files.length > 0;
+
+    if (matTitle || matVideoUrl || matVideoFile || matPdfFile) {
+        alert('⚠️ คุณมีข้อมูลสื่อการเรียนรู้ที่ยังไม่ได้กดปุ่ม "+ เพิ่มสื่อการเรียนรู้"\n\nกรุณากดปุ่ม "+ เพิ่มสื่อการเรียนรู้" (ปุ่มสีเทา) ก่อนกดบันทึกหลักสูตรครับ');
+        return;
+    }
+
     const courseId = document.getElementById('courseId').value;
     const title = document.getElementById('courseTitle').value;
     const description = document.getElementById('courseDescription').value;
@@ -303,11 +314,20 @@ async function handleCourseSubmit(e) {
                 materialData.append('file', material.file);
             }
 
-            await fetch(`${API_URL}/courses/${savedCourseId}/materials`, {
+            const matResponse = await fetch(`${API_URL}/courses/${savedCourseId}/materials`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${authToken}` },
                 body: materialData
             });
+            
+            if (!matResponse.ok) {
+                throw new Error(`อัปโหลดสื่อล้มเหลว (Status: ${matResponse.status}) อาจเกิดจากไฟล์มีขนาดใหญ่เกินไป`);
+            }
+            
+            const matData = await matResponse.json();
+            if (!matData.success) {
+                throw new Error(`อัปโหลดสื่อล้มเหลว: ${matData.message}`);
+            }
         }
 
         alert(courseId ? 'อัปเดตหลักสูตรสำเร็จ!' : 'สร้างหลักสูตรสำเร็จ!');
