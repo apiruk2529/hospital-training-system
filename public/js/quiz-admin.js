@@ -70,7 +70,10 @@ function renderQuizForm(passingScore = 60) {
             <!-- Questions will be rendered here -->
         </div>
 
-        <button type="button" class="btn btn-secondary" onclick="addQuestion()" style="width: 100%; margin-top: 1rem; border-style: dashed;">+ เพิ่มคำถาม</button>
+        <div style="display: flex; gap: 10px; margin-top: 1rem;">
+            <button type="button" class="btn btn-secondary" onclick="addQuestion()" style="flex: 1; border-style: dashed;">+ เพิ่มคำถาม</button>
+            ${currentQuizData.type === 'post' ? `<button type="button" class="btn btn-info" onclick="copyFromPreTest()" style="flex: 1; border-style: dashed; background-color: #e0f2fe; color: #0284c7; border-color: #0284c7;">📋 คัดลอกคำถามจากก่อนเรียน</button>` : ''}
+        </div>
 
         <div class="form-actions" style="margin-top: 2rem;">
             <button type="button" class="btn btn-secondary modal-close-btn" onclick="closeQuizModal()">ยกเลิก</button>
@@ -80,6 +83,43 @@ function renderQuizForm(passingScore = 60) {
 
     form.innerHTML = html;
     renderQuestions();
+}
+
+// Copy Questions from Pre-Test
+async function copyFromPreTest() {
+    if (!confirm('ต้องการคัดลอกคำถามจากแบบทดสอบก่อนเรียนหรือไม่?\\n(คำถามจะถูกนำมาต่อท้ายคำถามที่มีอยู่ปัจจุบัน)')) return;
+
+    try {
+        const response = await fetch(`${API_URL}/quizzes/course/${currentQuizData.courseId}/pre`, {
+            headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+
+        const data = await response.json();
+
+        if (data.success && data.data && data.data.questions && data.data.questions.length > 0) {
+            // Deep copy to prevent reference issues and strip IDs
+            const copiedQuestions = JSON.parse(JSON.stringify(data.data.questions));
+            copiedQuestions.forEach(q => {
+                delete q.question_id;
+                delete q.quiz_id;
+                if (q.answers) {
+                    q.answers.forEach(a => {
+                        delete a.answer_id;
+                        delete a.question_id;
+                    });
+                }
+            });
+
+            currentQuizData.questions = currentQuizData.questions.concat(copiedQuestions);
+            renderQuestions();
+            alert('คัดลอกคำถามสำเร็จ! กรุณาตรวจสอบและกดบันทึกแบบทดสอบ');
+        } else {
+            alert('ยังไม่มีแบบทดสอบก่อนเรียน หรือไม่พบคำถาม');
+        }
+    } catch (error) {
+        console.error('Error copying from pre-test:', error);
+        alert('เกิดข้อผิดพลาดในการดึงข้อมูลแบบทดสอบก่อนเรียน');
+    }
 }
 
 // Render Questions
